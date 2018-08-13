@@ -67,10 +67,7 @@ namespace AbyssalRose.Services
             }
         }
         #endregion
-
-
-
-
+        
         //TODO: Refactor on Config table
         const string endpoint = "https://api.guildwars2.com/v2";
         const string guildID = "9D9D532B-0743-E611-80D4-E4115BEBA648";
@@ -90,13 +87,11 @@ namespace AbyssalRose.Services
 
             foreach (var b in batches)
             {
-
                 string ids = string.Join(",", b.ToList());
                 var upgradeRequest = new RestRequest("guild/upgrades?ids=" + ids, Method.GET);
                 RestResponse<List<Guild.Upgrade>> upgradeResponse = (RestResponse<List<Guild.Upgrade>>)client.Execute<List<Guild.Upgrade>>(upgradeRequest);
 
                 queryUpgrades.AddRange(upgradeResponse.Data.Where(x => x.Type == "Unlock" && x.BuildTime == 0));
-
             }
 
             foreach (Guild.Upgrade gUp in queryUpgrades)
@@ -115,10 +110,11 @@ namespace AbyssalRose.Services
 
         public static void AddIconsToRequiredMaterials(ref List<GuildHallUpgrade.RequiredMaterial> mats)
         {
-            //Items
+            //API
             GetIconsByType("Item", "Items", ref mats);
             GetIconsByType("Coins", "Currencies", ref mats);
-            
+
+            //Manual
             SetLocalIcons("Aetherium", "/images/aetherium.png", ref mats);
             SetLocalIcons("Guild Favor", "/images/favor.png", ref mats);
         }
@@ -154,10 +150,10 @@ namespace AbyssalRose.Services
             var stashRequest = new RestRequest("guild/" + guildID + "/stash", Method.GET);
             RestResponse<dynamic> stashResponse = (RestResponse<dynamic>)client.Execute<dynamic>(stashRequest);
 
-            //foreach(dynamic stashItem in stashResponse.Data.inventory)
-            //{
-            //    mats.Where(x => x.MaterialID == stashItem.id).First().AmountInStash = stashItem.count;
-            //}
+            foreach(dynamic stashItem in stashResponse.Data.inventory)
+            {
+                mats.Where(x => x.MaterialID == stashItem.id).First().AmountInStash = stashItem.count;
+            }
         }
     }
 }
