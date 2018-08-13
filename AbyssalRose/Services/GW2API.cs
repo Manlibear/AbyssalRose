@@ -118,11 +118,17 @@ namespace AbyssalRose.Services
             //Items
             GetIconsByType("Item", "Items", ref mats);
             GetIconsByType("Coins", "Currencies", ref mats);
-            //GetIconsByType("Currency", "Currencies", ref mats);
-            //GetIconsByType("Collectible", "Currencies", ref mats);
+            
+            SetLocalIcons("Aetherium", "/images/aetherium.png", ref mats);
+            SetLocalIcons("Guild Favor", "/images/favor.png", ref mats);
+        }
 
-            mats.Where(x => x.Name == "Aetherium").First().Icon = "/images/aetherium.png";
-            mats.Where(x => x.Name == "Guild Favor").First().Icon = "/images/favor.png";
+        private static void SetLocalIcons(string name, string icon, ref List<GuildHallUpgrade.RequiredMaterial> mats)
+        {
+            if(mats.Where(x => x.Name == name).Count() > 0)
+            {
+                mats.Where(x => x.Name == name).First().Icon = icon;
+            }
         }
 
         private static void GetIconsByType(string type, string apiEndpoint, ref List<GuildHallUpgrade.RequiredMaterial> mats)
