@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Abyssal Rose</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/css/calendar.css">
+
+
+    <environment include="Development">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
+
+    </environment>
+
+
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a href='@Url.Action("Index", "Home")' class="navbar-brand">
+                    Abyssal Rose
+                </a>
+
+            </div>
+            <div class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav icon-menu">
+                    <li>
+                        <a href='@Url.Action("Index", "GuildHallUpgrades")'>
+                            <img src="~/images/guild-icon.png" class="grow" />
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav icon-menu">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Calendar"><img src="~/images/story-icon.png" class="grow" /></a></li>
+                </ul>
+
+                <ul class="nav navbar-nav icon-menu">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/pvp-icon.png" class="grow" /></a></li>
+                </ul>
+
+                <ul class="nav navbar-nav icon-menu">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/wvw-icon.png" class="grow" /></a></li>
+                </ul>
+
+                <ul class="nav navbar-nav icon-menu">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/inventory-icon.png" class="grow" /></a></li>
+                </ul>
+
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+        @RenderBody()
+
+    </main>
+
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">&copy; 2018 - Manlibear.</span>
+        </div>
+    </footer>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
+    <script src="~/js/calendar.js"></script>
+    <script src="~/js/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Upcoming Events";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12 shadow bg-white">
+        <h2>@ViewData["Title"]</h2>
+        <h3>@ViewData["Message"]</h3>
+
+        <div id="calendar"></div>
+        <br />
+    </div>
+</div>
+
+
+@section Scripts{
+<script type="text/javascript">
+
+    var calendar = $('#calendar').calendar({
+        events_source: [
+            {
+                "id": 293,
+                "title": "Website Started",
+                "url": "https://abyssalrose.azurewebsites.net",
+                "class": "event-important",
+                "start": 1533634572254, // Milliseconds
+                "end": 1533634572500  // Milliseconds
+            }
+        ]
+    });
+</script>
+}

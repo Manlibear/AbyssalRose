@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Guild Hall";
+}
+
+
+<div class="row">
+    <div class="col-md-3 shadow bg-white">
+        <h2>@ViewData["Title"]</h2>
+
+        <p>Focused Guild Hall Upgade</p>
+
+        @{if (User.IsInRole("Leaders") || User.IsInRole("Architect"))
+            {
+
+                @using (Html.BeginForm("UpdateFocusedUpgrade", "Home", FormMethod.Post))
+                {
+        <select class="selectpicker" data-live-search="true" id="FocusedUpgradeID">
+            @{
+                foreach (GW2Models.Guild.Upgrade upgrade in (List<GW2Models.Guild.Upgrade>)ViewData["Upgrades"])
+                {
+                    <option id="@upgrade.ID">@upgrade.Name</option>
+
+                }
+            }
+
+            
+
+        </select>
+                    <br />
+                    <input type="submit" id="btnSaveUpgrade" class="btn btn-success bottom-spacer" />
+                }
+
+            }
+            else
+            {
+
+                <p>@ViewBag.FocusedUpgrade</p>
+            }
+        }
+
+    </div>
+
+
+</div>
+

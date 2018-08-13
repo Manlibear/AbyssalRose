@@ -1,0 +1,75 @@
+﻿@using AbyssalRose.Models.GuildHallUpgradeModels;
+@using AbyssalRose.Models;
+@{
+    ViewBag.Title = "Guild Hall Upgrades";
+}
+@model GuildHallUpgradeViewModel
+
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 bg-white shadow">
+
+        <h2>Guild Hall Upgades</h2>
+        <br />
+
+        @if (User.IsInRole(AbyssalUser.ROLE_ARCHITECT) || User.IsInRole(AbyssalUser.ROLE_LEADER))
+        {
+            using (Html.BeginForm("SetFocusedUpgrade", "GuildHallUpgrades", FormMethod.Post))
+            {
+                
+                <select id="upgradeId" name="upgradeId" asp-for="upgradeId" class="selectpicker" data-live-search="true">
+
+                    @foreach (GuildHallUpgrade gUp in Model.guildHallUpgrades)
+                    {
+                        <option value="@gUp.UpgradeID" selected="@(gUp.UpgradeID == Model.focusedUpgrade.UpgradeID ? "selected" : "")">@gUp.Name</option>
+                    }
+
+                </select>
+
+                <input type="submit" class="btn btn-success" value="Submit" />
+            }
+        }
+        else
+        {
+            <h3>@Model.focusedUpgrade.Name</h3>
+        }
+        <br />
+
+        @if(Model.focusedUpgrade.UpgradeID > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>Name</td>
+                        <td>Need</td>
+                        <td>In-Stash</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(GuildHallUpgrade.RequiredMaterial mat in Model.focusedUpgrade.RequiredMaterials)
+                    {
+                    <tr>
+                        <td><img class="table-icon" src="@mat.Icon" /></td>
+                        <td><a href="https://wiki.guildwars2.com/wiki/@mat.Name">@mat.Name</a></td>
+                        <td>@mat.AmountNeeded</td>
+                        <td>@mat.AmountInStash</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#upgradeId option").filter(function(){
+            return $.trim($(this).val()) ==  @(Model.focusedUpgrade.UpgradeID);
+        }).prop('selected', true);
+
+    </script>
+}
+
+
