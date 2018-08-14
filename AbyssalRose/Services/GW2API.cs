@@ -67,10 +67,7 @@ namespace AbyssalRose.Services
             }
         }
         #endregion
-
-
-
-
+        
         //TODO: Refactor on Config table
         const string endpoint = "https://api.guildwars2.com/v2";
         const string guildID = "9D9D532B-0743-E611-80D4-E4115BEBA648";
@@ -90,13 +87,11 @@ namespace AbyssalRose.Services
 
             foreach (var b in batches)
             {
-
                 string ids = string.Join(",", b.ToList());
                 var upgradeRequest = new RestRequest("guild/upgrades?ids=" + ids, Method.GET);
                 RestResponse<List<Guild.Upgrade>> upgradeResponse = (RestResponse<List<Guild.Upgrade>>)client.Execute<List<Guild.Upgrade>>(upgradeRequest);
 
                 queryUpgrades.AddRange(upgradeResponse.Data.Where(x => x.Type == "Unlock" && x.BuildTime == 0));
-
             }
 
             foreach (Guild.Upgrade gUp in queryUpgrades)
@@ -115,14 +110,21 @@ namespace AbyssalRose.Services
 
         public static void AddIconsToRequiredMaterials(ref List<GuildHallUpgrade.RequiredMaterial> mats)
         {
-            //Items
+            //API
             GetIconsByType("Item", "Items", ref mats);
             GetIconsByType("Coins", "Currencies", ref mats);
-            //GetIconsByType("Currency", "Currencies", ref mats);
-            //GetIconsByType("Collectible", "Currencies", ref mats);
 
-            mats.Where(x => x.Name == "Aetherium").First().Icon = "/images/aetherium.png";
-            mats.Where(x => x.Name == "Guild Favor").First().Icon = "/images/favor.png";
+            //Manual
+            SetLocalIcons("Aetherium", "/images/aetherium.png", ref mats);
+            SetLocalIcons("Guild Favor", "/images/favor.png", ref mats);
+        }
+
+        private static void SetLocalIcons(string name, string icon, ref List<GuildHallUpgrade.RequiredMaterial> mats)
+        {
+            if(mats.Where(x => x.Name == name).Count() > 0)
+            {
+                mats.Where(x => x.Name == name).First().Icon = icon;
+            }
         }
 
         private static void GetIconsByType(string type, string apiEndpoint, ref List<GuildHallUpgrade.RequiredMaterial> mats)
@@ -148,10 +150,10 @@ namespace AbyssalRose.Services
             var stashRequest = new RestRequest("guild/" + guildID + "/stash", Method.GET);
             RestResponse<dynamic> stashResponse = (RestResponse<dynamic>)client.Execute<dynamic>(stashRequest);
 
-            //foreach(dynamic stashItem in stashResponse.Data.inventory)
-            //{
-            //    mats.Where(x => x.MaterialID == stashItem.id).First().AmountInStash = stashItem.count;
-            //}
+            foreach(dynamic stashItem in stashResponse.Data.inventory)
+            {
+                mats.Where(x => x.MaterialID == stashItem.id).First().AmountInStash = stashItem.count;
+            }
         }
     }
 }
