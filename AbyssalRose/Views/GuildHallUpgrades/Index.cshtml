@@ -7,16 +7,22 @@
 
 
 <div class="row">
-    <div class="col-md-10 col-md-offset-1 bg-white shadow">
 
+    <div class="col-md-10 col-md-offset-1 card-header dark-border">
         <h2>Guild Hall Upgades</h2>
-        <br />
+    </div>
+
+    <div class="col-md-10 col-md-offset-1 bg-white shadow dark-border"">
+
+
+
 
         @if (User.IsInRole(AbyssalUser.ROLE_ARCHITECT) || User.IsInRole(AbyssalUser.ROLE_LEADER))
         {
+            <br/>
             using (Html.BeginForm("SetFocusedUpgrade", "GuildHallUpgrades", FormMethod.Post))
             {
-                
+                @Html.Label("Focused Upgrade ", new { @class="form-label" });
                 <select id="upgradeId" name="upgradeId" asp-for="upgradeId" class="selectpicker" data-live-search="true">
 
                     @foreach (GuildHallUpgrade gUp in Model.guildHallUpgrades)
@@ -35,7 +41,7 @@
         }
         <br />
 
-        @if(Model.focusedUpgrade.UpgradeID > 0)
+        @if (Model.focusedUpgrade.UpgradeID > 0)
         {
             <table class="table">
                 <thead>
@@ -43,18 +49,18 @@
                         <td></td>
                         <td>Name</td>
                         <td>Need</td>
-                        <td>In-Stash</td>
+                        <td>Stash</td>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(GuildHallUpgrade.RequiredMaterial mat in Model.focusedUpgrade.RequiredMaterials)
+                    @foreach (GuildHallUpgrade.RequiredMaterial mat in Model.focusedUpgrade.RequiredMaterials)
                     {
-                    <tr>
-                        <td><img class="table-icon" src="@mat.Icon" /></td>
-                        <td><a href="https://wiki.guildwars2.com/wiki/@mat.Name">@mat.Name</a></td>
-                        <td>@mat.AmountNeeded</td>
-                        <td>@mat.AmountInStash</td>
-                    </tr>
+                        <tr>
+                            <td><img class="table-icon" src="@mat.Icon" /></td>
+                            <td><a href="https://wiki.guildwars2.com/wiki/@mat.Name">@mat.Name</a></td>
+                            <td>@mat.AmountNeeded</td>
+                            <td>@mat.AmountInStash</td>
+                        </tr>
                     }
                 </tbody>
             </table>

@@ -150,10 +150,10 @@ namespace AbyssalRose.Services
             var stashRequest = new RestRequest("guild/" + guildID + "/stash", Method.GET);
             RestResponse<dynamic> stashResponse = (RestResponse<dynamic>)client.Execute<dynamic>(stashRequest);
 
-            foreach(dynamic stashItem in stashResponse.Data.inventory)
-            {
-                mats.Where(x => x.MaterialID == stashItem.id).First().AmountInStash = stashItem.count;
-            }
+            //foreach(dynamic stashItem in stashResponse.Data.inventory)
+            //{
+            //    mats.Where(x => x.MaterialID == stashItem.id).First().AmountInStash = stashItem.count;
+            //}
         }
     }
 }

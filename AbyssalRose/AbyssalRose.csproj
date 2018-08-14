@@ -516,6 +516,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="css\menomonia.ttf" />
     <Content Include="images\aetherium.png" />
+    <Content Include="images\card-header.png" />
     <Content Include="images\favor.png" />
     <Content Include="less\calendar.less" />
     <Content Include="less\day.less" />
