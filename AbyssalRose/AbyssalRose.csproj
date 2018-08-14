@@ -510,6 +510,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="css\menomonia.ttf" />
+    <Content Include="images\aetherium.png" />
+    <Content Include="images\favor.png" />
     <Content Include="less\calendar.less" />
     <Content Include="less\day.less" />
     <Content Include="less\events.less" />
@@ -533,6 +535,7 @@
     <Content Include="lib\jquery-validation\LICENSE.md" />
     <Content Include="lib\jquery\.bower.json" />
     <Content Include="lib\jquery\dist\jquery.min.map" />
+    <None Include="Properties\PublishProfiles\abyssalrose - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="images\abyssalrose.png" />
     <Content Include="images\banner1.svg" />
