@@ -129,15 +129,16 @@ namespace AbyssalRose.Services
 
         private static void GetIconsByType(string type, string apiEndpoint, ref List<GuildHallUpgrade.RequiredMaterial> mats)
         {
-            string ids = String.Join(",", mats.Where(x => x.Type == type && x.Name != "Aetherium").Select(x => x.MaterialID).ToList());
+            string ids = String.Join(",", mats.Where(x => x.Type == type).Select(x => x.MaterialID).ToList());
+
             if (ids.Length > 0)
             {
                 var iconRequest = new RestRequest(apiEndpoint + "?ids=" + ids, Method.GET);
 
                 var client = new RestClient(endpoint);
-                RestResponse<List<object>> iconResponse = (RestResponse<List<object>>)client.Execute<List<object>>(iconRequest);
+                List<object> iconResponse = (List<object>)client.Execute<List<object>>(iconRequest).Data;
 
-                foreach (dynamic iconResult in iconResponse.Data)
+                foreach (dynamic iconResult in iconResponse)
                 {
                     mats.Where(x => x.MaterialID == iconResult["id"]).First().Icon = iconResult["icon"];
                 }
