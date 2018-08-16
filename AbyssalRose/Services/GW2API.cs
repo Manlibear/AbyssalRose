@@ -90,7 +90,8 @@ namespace AbyssalRose.Services
                     var upgradeRequest = new RestRequest("v2/guild/upgrades?ids=" + ids, Method.GET);
                     RestResponse<List<Guild.Upgrade>> upgradeResponse = (RestResponse<List<Guild.Upgrade>>)client.Execute<List<Guild.Upgrade>>(upgradeRequest);
 
-                    queryUpgrades.AddRange(upgradeResponse.Data.Where(x => x.Type == "Unlock" && x.BuildTime == 0));
+                    //TODO: This may be slow as shit
+                    queryUpgrades.AddRange(upgradeResponse.Data); //.Where(x => x.Type == "Unlock"));
                 }
 
                 foreach (Guild.Upgrade gUp in queryUpgrades)
