@@ -67,42 +67,42 @@ namespace AbyssalRose.Services
             }
         }
         #endregion
-        
-        //TODO: Refactor on Config table
-        const string endpoint = "https://api.guildwars2.com/v2";
-        const string guildID = "9D9D532B-0743-E611-80D4-E4115BEBA648";
-        
+
+
         public static List<GuildHallUpgrade> GetGuildUpgrades()
         {
             List<Guild.Upgrade> queryUpgrades = new List<Guild.Upgrade>();
             List<GuildHallUpgrade> upgrades = new List<GuildHallUpgrade>();
 
-            var client = new RestClient(endpoint);
-            var request = new RestRequest("guild/upgrades", Method.GET);
+            var client = new RestClient(ConfigHelper.Instance.GW2APIEndpoint);
+            var request = new RestRequest("v2/guild/upgrades", Method.GET);
 
             RestResponse<List<int>> response = (RestResponse<List<int>>)client.Execute<List<int>>(request);
 
             int size = 200;
-            var batches = response.Data.Batch(size).ToList();
-
-            foreach (var b in batches)
+            if (response.Data.Count > 0)
             {
-                string ids = string.Join(",", b.ToList());
-                var upgradeRequest = new RestRequest("guild/upgrades?ids=" + ids, Method.GET);
-                RestResponse<List<Guild.Upgrade>> upgradeResponse = (RestResponse<List<Guild.Upgrade>>)client.Execute<List<Guild.Upgrade>>(upgradeRequest);
+                var batches = response.Data.Batch(size).ToList();
 
-                queryUpgrades.AddRange(upgradeResponse.Data.Where(x => x.Type == "Unlock" && x.BuildTime == 0));
-            }
+                foreach (var b in batches)
+                {
+                    string ids = string.Join(",", b.ToList());
+                    var upgradeRequest = new RestRequest("v2/guild/upgrades?ids=" + ids, Method.GET);
+                    RestResponse<List<Guild.Upgrade>> upgradeResponse = (RestResponse<List<Guild.Upgrade>>)client.Execute<List<Guild.Upgrade>>(upgradeRequest);
 
-            foreach (Guild.Upgrade gUp in queryUpgrades)
-            {
-                GuildHallUpgrade ghup = new GuildHallUpgrade();
-                ghup.Name = gUp.Name;
-                ghup.UpgradeID = gUp.ID;
-                ghup.Icon = gUp.Icon;
-                ghup.RequiredMaterials = new List<GuildHallUpgrade.RequiredMaterial>();
-                ghup.RequiredMaterials.AddRange(gUp.Costs.Select(x => new GuildHallUpgrade.RequiredMaterial(x.ID, x.Name, x.Count, x.Type)));
-                upgrades.Add(ghup);
+                    queryUpgrades.AddRange(upgradeResponse.Data.Where(x => x.Type == "Unlock" && x.BuildTime == 0));
+                }
+
+                foreach (Guild.Upgrade gUp in queryUpgrades)
+                {
+                    GuildHallUpgrade ghup = new GuildHallUpgrade();
+                    ghup.Name = gUp.Name;
+                    ghup.UpgradeID = gUp.ID;
+                    ghup.Icon = gUp.Icon;
+                    ghup.RequiredMaterials = new List<GuildHallUpgrade.RequiredMaterial>();
+                    ghup.RequiredMaterials.AddRange(gUp.Costs.Where(x => x.Type == "Item").Select(x => new GuildHallUpgrade.RequiredMaterial(x.ID, x.Name, x.Count, x.Type)));
+                    upgrades.Add(ghup);
+                }
             }
 
             return upgrades;
@@ -121,7 +121,7 @@ namespace AbyssalRose.Services
 
         private static void SetLocalIcons(string name, string icon, ref List<GuildHallUpgrade.RequiredMaterial> mats)
         {
-            if(mats.Where(x => x.Name == name).Count() > 0)
+            if (mats.Where(x => x.Name == name).Count() > 0)
             {
                 mats.Where(x => x.Name == name).First().Icon = icon;
             }
@@ -133,9 +133,9 @@ namespace AbyssalRose.Services
 
             if (ids.Length > 0)
             {
-                var iconRequest = new RestRequest(apiEndpoint + "?ids=" + ids, Method.GET);
+                var iconRequest = new RestRequest("v2/" + apiEndpoint + "?ids=" + ids, Method.GET);
 
-                var client = new RestClient(endpoint);
+                var client = new RestClient(ConfigHelper.Instance.GW2APIEndpoint);
                 List<object> iconResponse = (List<object>)client.Execute<List<object>>(iconRequest).Data;
 
                 foreach (dynamic iconResult in iconResponse)
@@ -147,14 +147,23 @@ namespace AbyssalRose.Services
 
         public static void AddGuildStashAmountToMaterials(ref List<GuildHallUpgrade.RequiredMaterial> mats)
         {
-            var client = new RestClient(endpoint);
-            var stashRequest = new RestRequest("guild/" + guildID + "/stash", Method.GET);
-            RestResponse<dynamic> stashResponse = (RestResponse<dynamic>)client.Execute<dynamic>(stashRequest);
+            string accessToken = "?access_token=" + ConfigHelper.Instance.GW2APIKey;
+            var client = new RestClient(ConfigHelper.Instance.GW2APIEndpoint);
+            var stashRequest = new RestRequest("v2/guild/" + ConfigHelper.Instance.GW2GuildID + "/treasury" + accessToken, Method.GET);
+            dynamic stashResponse = client.Execute<dynamic>(stashRequest).Data;
 
-            //foreach(dynamic stashItem in stashResponse.Data.inventory)
-            //{
-            //    mats.Where(x => x.MaterialID == stashItem.id).First().AmountInStash = stashItem.count;
-            //}
+            if (stashResponse.Count > 0) //Guild has not unlocked stash if 0
+            {
+                foreach (dynamic stashItem in stashResponse)
+                {
+                    var matInStash = mats.Where(x => x.MaterialID == Convert.ToInt32(stashItem["item_id"]));
+
+                    if (matInStash.Count() > 0)
+                    {
+                        matInStash.First().AmountInStash = Convert.ToInt32(stashItem["count"]);
+                    }
+                }
+            }
         }
     }
 }

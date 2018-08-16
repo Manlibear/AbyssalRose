@@ -59,7 +59,8 @@
                             <td><img class="table-icon" src="@mat.Icon" /></td>
                             <td><a href="https://wiki.guildwars2.com/wiki/@mat.Name">@mat.Name</a></td>
                             <td>@mat.AmountNeeded</td>
-                            <td>@mat.AmountInStash</td>
+
+                            <td @mat.GetAmountClass() >@mat.AmountInStash</td>
                         </tr>
                     }
                 </tbody>

@@ -169,3 +169,11 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section, 
 .form-label {
     font-size: 1.3em;
 }
+
+.enough {
+    color: green;
+}
+
+.not-enough {
+    color: red;
+}

@@ -31,6 +31,11 @@ namespace AbyssalRose.Models
                 public int AmountInStash;
                 public string Icon;
                 public string Type;
+
+                public string GetAmountClass()
+                {
+                    return " class=" + (AmountInStash >= AmountNeeded ? "enough": "not-enough") + "";
+                }
             }
         }
     }

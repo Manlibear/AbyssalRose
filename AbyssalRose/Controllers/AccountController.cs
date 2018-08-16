@@ -379,10 +379,10 @@ namespace AbyssalRose.Controllers
 
 
 
-                await dcli.LoginAsync(Discord.TokenType.Bot, ConfigHelper.Instance.BotToken);
+                await dcli.LoginAsync(Discord.TokenType.Bot, ConfigHelper.Instance.DiscordBotToken);
 
                 ulong discordUserId = Convert.ToUInt64(info.ExternalIdentity.Claims.First().Value);
-                ulong guildId = Convert.ToUInt64(ConfigHelper.Instance.GuildID);
+                ulong guildId = Convert.ToUInt64(ConfigHelper.Instance.DiscordGuildID);
 
 
                 RestGuildUser guser = dcli.GetGuildUserAsync(guildId, discordUserId).Result;
