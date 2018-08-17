@@ -459,6 +459,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\GuildHallUpgradesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -470,12 +471,17 @@
     <Compile Include="Migrations\201808111039573_InitialCreate.Designer.cs">
       <DependentUpon>201808111039573_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808171318539_Event.cs" />
+    <Compile Include="Migrations\201808171318539_Event.Designer.cs">
+      <DependentUpon>201808171318539_Event.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AbyssalUser.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ConfigHelper.cs" />
-    <Compile Include="Models\Events.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventsViewModel.cs" />
     <Compile Include="Models\GuildHallUpgradeViewModel.cs" />
     <Compile Include="Models\GuildHalUpgradeModels.cs" />
     <Compile Include="Models\GW2Models.cs" />
@@ -495,8 +501,7 @@
     <Content Include="Content\fullcalendar.min.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\fullcalendar.print.min.css" />
-    <Content Include="css\calendar.css" />
-    <Content Include="css\calendar.min.css" />
+    <Content Include="css\fullcalendar.min.css" />
     <Content Include="css\site.css" />
     <Content Include="css\site.min.css" />
     <Content Include="favicon.ico" />
@@ -518,6 +523,8 @@
     <Content Include="images\aetherium.png" />
     <Content Include="images\card-header.png" />
     <Content Include="images\favor.png" />
+    <Content Include="js\fullcalendar.min.js" />
+    <Content Include="js\moment.min.js" />
     <Content Include="less\calendar.less" />
     <Content Include="less\day.less" />
     <Content Include="less\events.less" />
@@ -561,8 +568,6 @@
     <Content Include="images\pvp-icon.png" />
     <Content Include="images\story-icon.png" />
     <Content Include="images\wvw-icon.png" />
-    <Content Include="js\calendar.js" />
-    <Content Include="js\calendar.min.js" />
     <Content Include="js\site.js" />
     <Content Include="js\site.min.js" />
     <Content Include="js\underscore.js" />
@@ -757,6 +762,7 @@
     <Content Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <Content Include="Views\_ViewImports.cshtml" />
     <Content Include="Views\GuildHallUpgrades\Index.cshtml" />
+    <Content Include="Views\Events\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -769,6 +775,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201808111039573_InitialCreate.resx">
       <DependentUpon>201808111039573_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808171318539_Event.resx">
+      <DependentUpon>201808171318539_Event.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,36 @@
+﻿@model AbyssalRose.Models.EventsViewModel
+@{
+    ViewBag.Title = "Events";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 card-header dark-border">
+        <h2>@ViewBag.Title</h2>
+    </div>
+
+    <div class="col-md-10 col-md-offset-1 bg-white shadow dark-border" ">
+
+        <br />
+        <div id="calendar">
+
+        </div>
+        <br />
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#calendar').fullCalendar({
+                defaultView: 'month',
+                events: @Html.Raw(Model.GetEvents())
+                
+            });
+
+        });
+
+    </script>
+}

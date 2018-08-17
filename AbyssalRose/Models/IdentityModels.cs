@@ -23,6 +23,7 @@ namespace AbyssalRose.Models
     {
 
         public DbSet<Config> Config { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
